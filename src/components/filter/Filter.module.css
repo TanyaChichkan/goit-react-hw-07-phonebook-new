@@ -1,0 +1,30 @@
+.filterInput {
+  width: 400px;
+  height: 50px;
+  color: #171718;
+  font: inherit;
+  font-size: 1.2rem;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #bdbdbd;
+  outline: 0;
+  margin-bottom: 15px;
+}
+
+.filterInput:focus{
+  border: 2px solid #2b32b2;
+}
+
+
+
+.filter{
+  width: 500px;
+  margin-top:20px;
+  padding-left: 20px;
+  padding-top: 10px;
+  border: 1px solid grey;
+  border-radius: 2px;
+
+  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
+    0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+}
