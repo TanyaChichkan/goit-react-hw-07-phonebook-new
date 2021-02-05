@@ -1,71 +1,108 @@
-import { combineReducers } from 'redux';
-import { createReducer } from '@reduxjs/toolkit';
-import { addContact,deleteContact, setError, setLoading,updateContact,filterContacts, resetSelected,addToSelected,changeContact,getContacts} from '../actions/contactsActions';
+import { combineReducers } from "redux";
+import { createReducer } from "@reduxjs/toolkit";
+import {
+  addContact,
+  deleteContact,
+  setError,
+  resetError,
+  setLoading,
+  updateContact,
+  filterContacts,
+  resetSelected,
+  addToSelected,
+  changeContact,
+  getContacts,
+} from "../actions/contactsActions";
 
-const initialArray=[];
+const initialArray = [];
 
-const initialState={
+const initialState = {
   contacts: initialArray,
-  isLoading:false,
-  error:"",
-  selectedContact:null,
-}
+  isLoading: false,
+  error: "",
+  selectedContact: null,
+};
 
 // ==============================================Redux Toolkit==============================================
 
-const contactsReducer = createReducer({...initialState},{
-  [addContact]:(state,action)=>{
-      return {...state,contacts:[...state.contacts,action.payload]};
-  },
+const contactsReducer = createReducer(
+  { ...initialState },
+  {
+    [addContact]: (state, action) => {
+      return { ...state, contacts: [...state.contacts, action.payload] };
+    },
 
-  [setLoading]:(state)=>{
-    return {...state,isLoading:!state.isLoading}
-  },
+    [setLoading]: (state) => {
+      return { ...state, isLoading: !state.isLoading };
+    },
 
-  [setError]:(state,action)=>{
-    return{...state,error:action.payload}
-  },
+    [setError]: (state, action) => {
+      return { ...state, error: action.payload };
+    },
 
-  [deleteContact]:(state,action)=>{
-    return {...state,contacts:[...state.contacts.filter(contact=>contact.id !== action.payload)]};
-  },
+    [resetError]: (state, action) => {
+      return { ...state, error: "" };
+    },
 
-  [updateContact]:(state,action)=>{
-    return {...state,contacts:[...state.contacts.map(contact=>contact.id===action.payload ?
-    {...contact, update: !contact.update} : contact)]}
-  },
+    [deleteContact]: (state, action) => {
+      return {
+        ...state,
+        contacts: [...state.contacts.filter((contact) => contact.id !== action.payload)],
+      };
+    },
 
-  [resetSelected]:(state,action)=>{
-    return{...state,selectedContact:null}
-  },
+    [updateContact]: (state, action) => {
+      return {
+        ...state,
+        contacts: [
+          ...state.contacts.map((contact) =>
+            contact.id === action.payload ? { ...contact, update: !contact.update } : contact
+          ),
+        ],
+      };
+    },
 
-  [addToSelected]:(state,action)=>{
-    if(state.contacts.find(contact=>contact.id === action.payload)){
-      return {...state,selectedContact:{...state.contacts.find(contact=>contact.id === action.payload)}}
-    }else {
-      return state
-    }
-  },
+    [resetSelected]: (state, action) => {
+      return { ...state, selectedContact: null };
+    },
 
-  [changeContact]:(state,action)=>{
-    return{...state,contacts:[...state.contacts.map(item=>item.id===action.payload.id ?
-          {...item,name:action.payload.name, number: action.payload.number,update:false}:{...item})]}
-  },
+    [addToSelected]: (state, action) => {
+      if (state.contacts.find((contact) => contact.id === action.payload)) {
+        return {
+          ...state,
+          selectedContact: { ...state.contacts.find((contact) => contact.id === action.payload) },
+        };
+      } else {
+        return state;
+      }
+    },
 
-  [getContacts]:(state,action)=>{
-    return{...state,contacts:[...action.payload]}
+    [changeContact]: (state, action) => {
+      return {
+        ...state,
+        contacts: [
+          ...state.contacts.map((item) =>
+            item.id === action.payload.id
+              ? { ...item, name: action.payload.name, number: action.payload.number, update: false }
+              : { ...item }
+          ),
+        ],
+      };
+    },
+
+    [getContacts]: (state, action) => {
+      return { ...state, contacts: [...action.payload] };
+    },
   }
+);
+
+const filterReducer = createReducer("", {
+  [filterContacts]: (state, action) => {
+    return (state = action.payload);
+  },
 });
 
-const filterReducer = createReducer("",{
-  [filterContacts]:(state,action)=>{
-    return state=action.payload
-  }
-});
-
-export const rootReducer=combineReducers({
+export const rootReducer = combineReducers({
   contactsArr: contactsReducer,
   filterValue: filterReducer,
-})
-
-
+});

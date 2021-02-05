@@ -1,40 +1,44 @@
-import React, {useState, useEffect} from 'react';
-import styles from './Form.module.css';
-import {changeContact,resetSelected} from '../../redux/actions/contactsActions';
-import {addContactOperations,changeContactsOperations} from '../../redux/operations/contactsOperations';
-import {connect} from 'react-redux';
-import Notification from '../notification/Notification';
+import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
 
+import Notification from "../notification/Notification";
 
-const initialState={
-  name:"",
-  number:"",
+import { resetSelected } from "../../redux/actions/contactsActions";
+import {
+  addContactOperations,
+  changeContactsOperations,
+} from "../../redux/operations/contactsOperations";
+import { getContacts, getSelectedContact } from "../../redux/selectors/contactsSelectors";
 
-}
+import styles from "./Form.module.css";
 
-const Form = ({addContact,alertFlag,selectedContact,changeContact,resetSelected,contacts}) => {
+const initialState = {
+  name: "",
+  number: "",
+};
 
-  const [state,setState] = useState({...initialState});
-  const[alert,setAlert]=useState(false);
-  const[doubledName,setDoubledName]=useState("");
-  const buttonActive =state.name && state.number? false:true;
+const Form = ({ addContact, selectedContact, changeContact, contacts }) => {
+  const [state, setState] = useState({ ...initialState });
+  const [alert, setAlert] = useState(false);
+  const [doubledName, setDoubledName] = useState("");
+  const buttonActive = state.name && state.number ? false : true;
 
-  useEffect(()=>{
-   selectedContact ? setState({...selectedContact}) : setState({...initialState});
-  },[selectedContact]);
+  useEffect(() => {
+    selectedContact ? setState({ ...selectedContact }) : setState({ ...initialState });
+  }, [selectedContact]);
 
-  const handleChange=e=>{
-    const {name,value} = e.target;
-    setState(prev=>({...prev,[name]:value}))
-  }
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setState((prev) => ({ ...prev, [name]: value }));
+  };
 
-  const handleSubmit=e=>{
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    if(selectedContact){
-    changeContact(state);
+    if (selectedContact) {
+      changeContact(state);
     } else {
-      if(contacts.some(contact=>contact.name.toLowerCase() === state.name.toLowerCase())){
+      if (contacts.some((contact) => contact.name.toLowerCase() === state.name.toLowerCase())) {
         setAlert(true);
         setDoubledName(state.name);
       } else {
@@ -42,53 +46,70 @@ const Form = ({addContact,alertFlag,selectedContact,changeContact,resetSelected,
       }
     }
 
-    setState({...initialState});
+    setState({ ...initialState });
     // resetSelected();
-  }
+  };
 
-  return(
+  return (
     <>
-    {alert &&  <Notification name={doubledName} changeAlert={setAlert} changeName={setDoubledName}/>}
+      {alert && (
+        <Notification name={doubledName} changeAlert={setAlert} changeName={setDoubledName} />
+      )}
 
-    <form onSubmit={handleSubmit} className={styles.form}>
-      <label className={styles.label}> Name
-        <input type="text" value={state.name} name="name" onChange={handleChange} className={styles.input}/>
-      </label>
+      <form onSubmit={handleSubmit} className={styles.form}>
+        <label className={styles.label}>
+          {" "}
+          Name
+          <input
+            type="text"
+            value={state.name}
+            name="name"
+            onChange={handleChange}
+            className={styles.input}
+          />
+        </label>
 
-      <label className={styles.label}> Number
-        <input type="text" value={state.number} name="number" onChange={handleChange} className={styles.input}/>
-      </label>
+        <label className={styles.label}>
+          {" "}
+          Number
+          <input
+            type="text"
+            value={state.number}
+            name="number"
+            onChange={handleChange}
+            className={styles.input}
+          />
+        </label>
 
-     <button type="submit" disabled={buttonActive} className={styles.formButton}>{selectedContact ? "Save contact" : "Add contact"}</button>
-
-    </form>
+        <button type="submit" disabled={buttonActive} className={styles.formButton}>
+          {selectedContact ? "Save contact" : "Add contact"}
+        </button>
+      </form>
     </>
-  )
+  );
 };
 
-const mapStateToProps=(state)=>{
+const mapStateToProps = (state) => {
   return {
-    alertFlag:state.contactsArr.alert,
-    contacts: state.contactsArr.contacts,
-    selectedContact:state.contactsArr.selectedContact
-  }
-}
+    contacts: getContacts(state),
+    selectedContact: getSelectedContact(state),
+  };
+};
 
-const mapDispatchToProps=(dispatch)=>{
+const mapDispatchToProps = (dispatch) => {
   return {
-    addContact: (contact)=>{
-      dispatch(addContactOperations(contact))
+    addContact: (contact) => {
+      dispatch(addContactOperations(contact));
     },
 
-    changeContact: (contact)=>{
-      dispatch(changeContactsOperations(contact))
+    changeContact: (contact) => {
+      dispatch(changeContactsOperations(contact));
     },
 
-    resetSelected:()=>{
-      dispatch(resetSelected())
+    resetSelected: () => {
+      dispatch(resetSelected());
     },
-  }
-}
+  };
+};
 
-export default connect(mapStateToProps,mapDispatchToProps)(Form);
-
+export default connect(mapStateToProps, mapDispatchToProps)(Form);

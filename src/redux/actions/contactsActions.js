@@ -1,18 +1,20 @@
-import { createAction } from '@reduxjs/toolkit';
+import { createAction } from "@reduxjs/toolkit";
 
-// ==========================Redux Tollkit===========================================
+// ==========================Redux Toolkit===========================================
 
-export const addContact=createAction("ADD_CONTACT");
+export const addContact = createAction("ADD_CONTACT");
 
-export const setLoading=createAction("SET_LOADING");
+export const setLoading = createAction("SET_LOADING");
 
-export const setError=createAction("SET_ERROR");
+export const setError = createAction("SET_ERROR");
+
+export const resetError = createAction("RESET_ERROR");
 
 export const deleteContact = createAction("DELETE_CONTACT");
 
-export const updateContact=createAction("UPDATE_CONTACT");
+export const updateContact = createAction("UPDATE_CONTACT");
 
-export const filterContacts=createAction("FILER_CONTACT");
+export const filterContacts = createAction("FILER_CONTACT");
 
 export const changeAlert = createAction("CHANGE_ALERT");
 
@@ -67,24 +69,23 @@ export const getContacts = createAction("GET_CONTACTS");
 // }
 
 // export const filterContacts=(value)=>{
-  //   return{
-  //     type:FILTERCONTACT,
-  //     payload:value
-  //   }
-  // }
+//   return{
+//     type:FILTERCONTACT,
+//     payload:value
+//   }
+// }
 
-  // export const changeAlert=()=>{
-    //   return{
-    //     type:CHANGEALERT
-    //   }
-    // }
+// export const changeAlert=()=>{
+//   return{
+//     type:CHANGEALERT
+//   }
+// }
 
-    // export const resetSelected=()=>{
-    //   return{
-    //     type:RESETSELECTED
-    //   }
-    // }
-
+// export const resetSelected=()=>{
+//   return{
+//     type:RESETSELECTED
+//   }
+// }
 
 // export const addToSelected=(id)=>{
 //   return{
@@ -107,11 +108,3 @@ export const getContacts = createAction("GET_CONTACTS");
 // }
 
 // ============================================================================
-
-
-
-
-
-
-
-
